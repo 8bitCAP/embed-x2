@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>1.com - Embedder</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body, iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      margin: 0;
+      overflow: hidden;
+    }
+    #notice {
+      font-family: sans-serif;
+      padding: 2em;
+      text-align: center;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="notice" style="display:none"></div>
+  <script>
+    // Parse the query string for the URL to embed
+    function getEmbedUrl() {
+      const query = window.location.search;
+      if (!query.startsWith('??')) {
+        // Only support ?https://... pattern (not ?foo=bar)
+        const url = query.slice(1);
+        try {
+          // Basic validation
+          if (!/^https?:\/\/\S+/i.test(url)) return '';
+          return url;
+        } catch {
+          return '';
+        }
+      }
+      return '';
+    }
+
+    const embedUrl = getEmbedUrl();
+
+    if (embedUrl) {
+      // Create the iframe to embed the URL
+      const iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.allow = "fullscreen; clipboard-read; clipboard-write";
+      iframe.style.width = "100vw";
+      iframe.style.height = "100vh";
+      iframe.style.border = "none";
+      document.body.appendChild(iframe);
+    } else {
+      document.getElementById('notice').style.display = 'block';
+      document.getElementById('notice').innerHTML = 
+        <p>You Shouldnt See This<br>
+    }
+  </script>
+</body>
+</html>
